@@ -1,0 +1,17 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.13.3
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:8080"
+    environment:
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?Set WEBUI_SECRET_KEY in .env}
+      ENABLE_OLLAMA_API: "false"
+      GITHUB_WEEKLY_REPOS: ${GITHUB_WEEKLY_REPOS:-}
+      GITHUB_WEEKLY_TOKEN: ${GITHUB_WEEKLY_TOKEN:-}
+    volumes:
+      - open-webui-data:/app/backend/data
+      - ./github_weekly.py:/app/github_weekly.py:ro
+
+volumes:
+  open-webui-data:
